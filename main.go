@@ -7,7 +7,7 @@ import (
 	"net"
 
 	"github.com/eiannone/keyboard"
-	"github.com/joeyak/hoin-printer"
+	"github.com/joeyak/go-escpos"
 )
 
 func checkErr(err error) {
@@ -19,7 +19,7 @@ func checkErr(err error) {
 func main() {
 	var addr string
 
-	flag.StringVar(&addr, "adder", "192.168.1.23:9100", "Address to connect printer too")
+	flag.StringVar(&addr, "adder", escpos.DefaultPrinterIP, "Address to connect printer too")
 	flag.Parse()
 
 	conn, err := net.Dial("tcp", addr)
@@ -29,7 +29,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	printer := hoin.NewPrinter(conn)
+	printer := escpos.NewPrinter(conn)
 
 	checkErr(keyboard.Open())
 	defer keyboard.Close()
